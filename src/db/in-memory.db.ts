@@ -1,7 +1,7 @@
 import {Video, availableResolutions} from "../videos/types/video";
 
 export const db = {
-  video: <Video[]>[
+  videos: <Video[]>[
     {
       id: 1,
       title: 'How to learn js',
