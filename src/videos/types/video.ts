@@ -13,8 +13,8 @@ export type Video = {
   id: number;
   title: string;
   author: string;
-  canBeDownloaded: boolean;
-  minAgeRestriction: number;
+  canBeDownloaded: boolean | false;
+  minAgeRestriction: number | null;
   createdAt: Date;
   publicationDate: Date;
   availableResolutions: availableResolutions[];
