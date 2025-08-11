@@ -15,7 +15,7 @@ export type Video = {
   author: string;
   canBeDownloaded: boolean | false;
   minAgeRestriction: number | null;
-  createdAt: Date;
-  publicationDate: Date;
+  createdAt: string;
+  publicationDate: string;
   availableResolutions: availableResolutions[];
 };

@@ -27,8 +27,8 @@ videosRouter.post('/', async (req: Request, res: Response ) => {
         canBeDownloaded: req.body.canBeDownloaded ?? false,
         minAgeRestriction: req.body.minAgeRestriction ?? null,
         availableResolutions: req.body.availableResolutions ?? [availableResolutions.P144],
-        createdAt: createdAtDate,
-        publicationDate: publicationDate,
+        createdAt: createdAtDate.toISOString(),
+        publicationDate: publicationDate.toDateString(),
     };
 
 
@@ -48,5 +48,5 @@ videosRouter.post('/', async (req: Request, res: Response ) => {
         availableResolutions: req.body.availableResolutions || [availableResolutions.P144],
     }
     db.videos.push(newVideo)
-    res.status(HttpStatus.Ok).send(db.videos);
+    res.status(HttpStatus.Created).send(newVideo);
 })
