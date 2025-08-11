@@ -16,6 +16,23 @@ videosRouter.get('/', async (req: Request, res: Response ) => {
 })
 
 
+videosRouter.get('/:id', async (req: Request, res: Response ) => {
+    const id = parseInt(req.params.id);
+    const video = db.videos.find(video => video.id == id);
+
+    if(!video) {
+        res
+            .status(HttpStatus.NotFound)
+            .send(
+                createErrorMessages([{field:'id', message:'Video not found'}])
+            );
+    }
+
+    res.status(HttpStatus.Ok).send(video);
+
+})
+
+
 videosRouter.post('/', async (req: Request, res: Response ) => {
 
     const createdAtDate = new Date();
@@ -50,3 +67,5 @@ videosRouter.post('/', async (req: Request, res: Response ) => {
     db.videos.push(newVideo)
     res.status(HttpStatus.Created).send(newVideo);
 })
+
+
