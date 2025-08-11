@@ -54,5 +54,21 @@ describe('Videos API', () => {
             .get('/videos')
             .expect(HttpStatus.Ok)
     })
+    it('should return videos by ID; GET /videos:id', async () => {
+        const createResponse = await request(app)
+            .post('/videos')
+            .send({...testVideos, title:'Video 1'})
+            .expect(HttpStatus.Created);
+
+        const getResponse = await request(app)
+            .get(`/videos/${createResponse.body.id}`)
+            .expect(HttpStatus.Ok);
+
+        expect(getResponse.body).toEqual({
+            ...createResponse.body,
+            id:expect.any(Number),
+            createdAt:expect.any(String)
+        });
+    })
 
 });
