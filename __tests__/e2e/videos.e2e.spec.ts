@@ -70,5 +70,24 @@ describe('Videos API', () => {
             createdAt:expect.any(String)
         });
     })
+    it('Should delete video by ID; DELETE /videos;id', async () => {
+        const createResponse = await request(app)
+            .post('/videos')
+            .send({...testVideos, title:'Video 1'})
+            .expect(HttpStatus.Created);
+        await request(app)
+            .post('/videos')
+            .send({...testVideos, title:'Video 2'})
+            .expect(HttpStatus.Created);
+
+        await request(app)
+            .delete(`/videos/${createResponse.body.id}`)
+            .expect(HttpStatus.NoContent);
+
+
+        const getResponse = await request(app)
+            .get(`/videos/${createResponse.body.id}`)
+        expect(getResponse.status).toBe(HttpStatus.NotFound);
+    })
 
 });

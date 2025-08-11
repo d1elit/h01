@@ -32,6 +32,25 @@ videosRouter.get('/:id', async (req: Request, res: Response ) => {
 
 })
 
+videosRouter.delete('/:id', async (req: Request, res: Response ) => {
+    const id = parseInt(req.params.id);
+    const index = db.videos.findIndex(video => video.id === id);
+
+    if(index === -1) {
+        res
+            .status(HttpStatus.NotFound)
+            .send(
+                createErrorMessages([{field:'id', message:'Video not found'}])
+            );
+        return
+    }
+
+
+    db.videos.splice(index, 1);
+    res.sendStatus(HttpStatus.NoContent);
+
+})
+
 
 videosRouter.post('/', async (req: Request, res: Response ) => {
 
