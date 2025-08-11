@@ -16,8 +16,8 @@ describe('Videos API', () => {
         author: 'Marko Polo',
         canBeDownloaded: false,
         minAgeRestriction: 18,
-        createdAt: new Date(),
-        publicationDate: new Date(),
+        createdAt: new Date().toISOString(),
+        publicationDate: new Date().toISOString(),
         availableResolutions: Object.values(availableResolutions),
     };
 
@@ -27,6 +27,32 @@ describe('Videos API', () => {
 
     it('Should delete all data', async () => {
         await request(app).delete('/testing/all-data').expect(HttpStatus.NoContent);
+    })
+
+    it('Should create a video; POST /videos', async () => {
+        const newVideo: Video = {
+            ...testVideos,
+            title:'Cars',
+            author:'Bebrail',
+        }
+
+        await request(app)
+            .post('/videos')
+            .send(newVideo)
+            .expect(HttpStatus.Created);
+    })
+    it('should return videos list; GET /videos', async () => {
+        await request(app)
+            .post('/videos')
+            .send({...testVideos, title:'Video 1'})
+            .expect(HttpStatus.Created);
+        await request(app)
+            .post('/videos')
+            .send({...testVideos, title:'Video 2'})
+            .expect(HttpStatus.Created);
+        const videosListResponse = await request(app)
+            .get('/videos')
+            .expect(HttpStatus.Ok)
     })
 
 });
