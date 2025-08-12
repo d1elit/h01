@@ -89,5 +89,37 @@ describe('Videos API', () => {
             .get(`/videos/${createResponse.body.id}`)
         expect(getResponse.status).toBe(HttpStatus.NotFound);
     })
+    it('Should update video by ID; PUT /videos;id', async () => {
+        const createResponse = await request(app)
+            .post('/videos')
+            .send({...testVideos, title:'Video 1'})
+            .expect(HttpStatus.Created);
+
+
+        const videoUpadteData: Video = {
+            ...createResponse.body,
+            title: 'Tets',
+        }
+
+        await request(app)
+            .put(`/videos/${createResponse.body.id}`)
+            .send(videoUpadteData)
+            .expect(HttpStatus.NoContent);
+
+
+
+        const videoResponse = await request(app)
+            .get(`/videos/${createResponse.body.id}`)
+
+        expect(videoResponse.body).toEqual({
+            ...videoUpadteData,
+            id:createResponse.body.id,
+            createdAt: expect.any(String)
+        })
+
+    })
+
+
+
 
 });
