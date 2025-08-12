@@ -32,6 +32,48 @@ videosRouter.get('/:id', async (req: Request, res: Response ) => {
 
 })
 
+videosRouter.put('/:id', async (req: Request, res: Response ) => {
+    const id = parseInt(req.params.id);
+    const index = db.videos.findIndex(video => video.id === id);
+
+
+
+
+    if(index === -1) {
+        res
+            .status(HttpStatus.NotFound)
+            .send(
+                createErrorMessages([{field:'id', message:'Video not found'}])
+            );
+        return
+    }
+
+    const video = db.videos[index];
+    const videoDto: VideoInputDto = {
+        id: video.id,
+        author : req.body.author ?? video.author,
+        title :req.body.title ?? video.title,
+        canBeDownloaded : req.body.canBeDownloaded ??  video.canBeDownloaded,
+        minAgeRestriction : req.body.minAgeRestriction ?? video.minAgeRestriction,
+        availableResolutions : video.availableResolutions ?? video.availableResolutions,
+        createdAt: video.createdAt,
+        publicationDate: video.publicationDate,
+
+    }
+
+    const errors = videoInputDtoValidation(videoDto);
+    if(errors.length > 0) {
+        res.status(HttpStatus.BadRequest).send(createErrorMessages(errors));
+        return
+    }
+
+    db.videos[index] = videoDto
+
+    res.sendStatus(HttpStatus.NoContent);
+
+})
+
+
 videosRouter.delete('/:id', async (req: Request, res: Response ) => {
     const id = parseInt(req.params.id);
     const index = db.videos.findIndex(video => video.id === id);
