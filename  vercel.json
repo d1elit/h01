@@ -6,13 +6,13 @@
 
   "builds": [
 
-    { "src": "dist/index.ts", "use": "@vercel/node" }
+    { "src": "src/setup-app.ts", "use": "@vercel/node" }
 
   ],
 
   "routes": [
 
-    { "src": "/(.*)", "dest": "dist/index.ts" }
+    { "src": "/(.*)", "dest": "src/setup-app.ts" }
 
   ]
 
